@@ -98,3 +98,27 @@ WHERE A.주문번호 = 1100009;
 
 -- 만약 조인결과가 없는 경우 NULL ROWS 출력 
 
+
+SELECT NVL(COALESCE(B.개인고객명, C.법인명),'NULL') 고객명
+   FROM 주문 A
+LEFT OUTER JOIN 개인고객 B
+   ON (A.개인법인번호 = B.개인번호)
+LEFT OUTER JOIN 법인고객 C
+   ON (A.개인법인번호 = C.법인번호)
+WHERE A.주문번호 = 1100009;  
+
+SELECT NVL(U.고객명, 'NULL') AS 결과
+FROM(
+SELECT B.개인고객명 AS 고객명
+    FROM 주문 A, 개인고객 B
+WHERE A.주문번호 = 1100009                    
+   AND A.고객구분코드 = '01'
+   AND A.개인법인번호 = B.개인번호
+
+UNION ALL
+
+SELECT B.법인명 AS 고객명
+   FROM 주문 A, 법인고객 B
+WHERE A.주문번호 = 1100009                    
+   AND A.고객구분코드 = '02'
+   AND A.개인법인번호 = B.법인번호) U;
