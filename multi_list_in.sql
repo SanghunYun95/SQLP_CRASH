@@ -1,0 +1,12 @@
+
+-- 다중 리스트를 이용한 IN
+-- JOB이 MANAGER이면서 20번 부서에 속하거나
+-- JOB이 CLERK이면서 30번 부서에 속하는 사원의 정보
+SELECT ENAME, JOB, DEPTNO
+FROM EMP
+WHERE (JOB, DEPTNO) IN (('MANAGER', 20), ('CLERK', 30));
+
+-- 아래와는 다른 결과
+SELECT ENAME, JOB, DEPTNO
+FROM EMP
+WHERE JOB IN('MANAGER', 'CLERK') AND DEPTNO IN (20, 30);
